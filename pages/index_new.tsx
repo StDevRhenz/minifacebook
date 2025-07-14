@@ -3,7 +3,7 @@ import Header from '../src/components/layout/Header';
 import PostList from '../src/components/features/posts/PostList';
 import CreatePost from '../src/components/features/posts/CreatePost';
 import { useAuth } from '../src/contexts/AuthContent';
-import { usePosts } from '../src/contexts/PostsContext';
+import usePosts from '../src/hooks/usePosts';
 
 const HomePage = () => {
     const { posts, removePost } = usePosts();

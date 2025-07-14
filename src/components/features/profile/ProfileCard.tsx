@@ -9,19 +9,36 @@ interface ProfileCardProps {
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ profile, isOwnProfile = false, onEditClick }) => {
     return (
-        <div className="profile-card bg-white rounded-lg shadow-md p-6 mb-6">
-            <div className="flex items-start space-x-4">
+        <div className="post-card" style={{ marginBottom: 'var(--space-6)' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-4)' }}>
                 {/* Avatar */}
-                <div className="flex-shrink-0">
+                <div style={{ flexShrink: 0 }}>
                     {profile.avatarUrl ? (
                         <img 
                             src={profile.avatarUrl} 
                             alt={profile.username}
-                            className="w-20 h-20 rounded-full object-cover"
+                            style={{
+                                width: '80px',
+                                height: '80px',
+                                borderRadius: 'var(--radius-full)',
+                                objectFit: 'cover'
+                            }}
                         />
                     ) : (
-                        <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center">
-                            <span className="text-2xl font-bold text-gray-600">
+                        <div style={{
+                            width: '80px',
+                            height: '80px',
+                            borderRadius: 'var(--radius-full)',
+                            background: 'var(--color-bg-tertiary)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <span style={{
+                                fontSize: '1.5rem',
+                                fontWeight: '700',
+                                color: 'var(--color-text-primary)'
+                            }}>
                                 {profile.username.charAt(0).toUpperCase()}
                             </span>
                         </div>
@@ -29,18 +46,23 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile, isOwnProfile = false
                 </div>
 
                 {/* Profile Info */}
-                <div className="flex-grow">
-                    <div className="flex items-center justify-between">
+                <div style={{ flexGrow: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div>
-                            <h2 className="text-2xl font-bold text-gray-900">
+                            <h2 style={{
+                                fontSize: '1.5rem',
+                                fontWeight: '700',
+                                color: 'var(--color-text-primary)',
+                                marginBottom: 'var(--space-1)'
+                            }}>
                                 {profile.fullName || profile.username}
                             </h2>
-                            <p className="text-gray-600">@{profile.username}</p>
+                            <p style={{ color: 'var(--color-text-tertiary)' }}>@{profile.username}</p>
                         </div>
                         {isOwnProfile && (
                             <button 
                                 onClick={onEditClick}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                className="btn btn-secondary"
                             >
                                 Edit Profile
                             </button>
@@ -49,32 +71,45 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile, isOwnProfile = false
 
                     {/* Bio */}
                     {profile.bio && (
-                        <p className="mt-3 text-gray-700">{profile.bio}</p>
+                        <p style={{ 
+                            marginTop: 'var(--space-3)', 
+                            color: 'var(--color-text-secondary)',
+                            lineHeight: 1.6
+                        }}>
+                            {profile.bio}
+                        </p>
                     )}
 
                     {/* Additional Info */}
-                    <div className="mt-4 space-y-2">
+                    <div style={{ marginTop: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                         {profile.location && (
-                            <div className="flex items-center text-gray-600">
-                                <span className="mr-2">📍</span>
+                            <div style={{ display: 'flex', alignItems: 'center', color: 'var(--color-text-tertiary)' }}>
+                                <span style={{ marginRight: 'var(--space-2)' }}>📍</span>
                                 <span>{profile.location}</span>
                             </div>
                         )}
                         {profile.website && (
-                            <div className="flex items-center text-gray-600">
-                                <span className="mr-2">🔗</span>
+                            <div style={{ display: 'flex', alignItems: 'center', color: 'var(--color-text-tertiary)' }}>
+                                <span style={{ marginRight: 'var(--space-2)' }}>🔗</span>
                                 <a 
                                     href={profile.website} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
-                                    className="text-blue-600 hover:underline"
+                                    style={{ color: 'var(--color-accent)', textDecoration: 'none' }}
+                                    onMouseOver={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                                    onMouseOut={(e) => e.currentTarget.style.textDecoration = 'none'}
                                 >
                                     {profile.website}
                                 </a>
                             </div>
                         )}
-                        <div className="flex items-center text-gray-500 text-sm">
-                            <span className="mr-2">📅</span>
+                        <div style={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            color: 'var(--color-text-muted)', 
+                            fontSize: '0.875rem' 
+                        }}>
+                            <span style={{ marginRight: 'var(--space-2)' }}>📅</span>
                             <span>
                                 Joined {new Date(profile.createdAt).toLocaleDateString('en-US', {
                                     year: 'numeric',

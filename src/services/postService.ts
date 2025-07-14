@@ -158,6 +158,37 @@ export const createPost = async (postData: CreatePostRequest): Promise<Post> => 
     }
 
     try {
+        // First, ensure the user has a profile
+        const { data: existingProfile, error: profileCheckError } = await supabase
+            .from('profiles')
+            .select('id')
+            .eq('id', postData.authorId)
+            .single();
+        
+        // If profile doesn't exist, create one
+        if (profileCheckError || !existingProfile) {
+            console.log('Profile not found, creating one for user:', postData.authorId);
+            
+            // Get user data from auth
+            const { data: userData, error: userError } = await supabase.auth.getUser();
+            if (userData.user && userData.user.id === postData.authorId) {
+                const { error: createProfileError } = await supabase
+                    .from('profiles')
+                    .insert([{
+                        id: postData.authorId,
+                        username: userData.user.user_metadata?.username || 'user',
+                        full_name: userData.user.user_metadata?.username || 'User',
+                    }]);
+                
+                if (createProfileError) {
+                    console.error('Failed to create profile:', createProfileError);
+                    throw new Error('Unable to create user profile. Please try again.');
+                }
+            } else {
+                throw new Error('Unable to verify user identity. Please try logging in again.');
+            }
+        }
+
         // First try with profiles join
         let { data, error } = await supabase
             .from('posts')

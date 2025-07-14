@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { useAuth } from '../src/contexts/AuthContent';
 import { useProfile } from '../src/hooks/useProfile';
 import Header from '../src/components/layout/Header';
-import Footer from '../src/components/layout/Footer';
 import ProfileCard from '../src/components/features/profile/ProfileCard';
 import EditProfile from '../src/components/features/profile/EditProfile';
 import PostList from '../src/components/features/posts/PostList';
 import CreatePost from '../src/components/features/posts/CreatePost';
-import usePosts from '../src/hooks/usePosts';
+import { usePosts } from '../src/contexts/PostsContext';
 
 const ProfilePage = () => {
     const { user } = useAuth();
@@ -20,32 +19,36 @@ const ProfilePage = () => {
 
     if (!user) {
         return (
-            <div>
+            <div className="page-container">
                 <Header />
-                <div className="container mx-auto px-4 py-8">
-                    <p className="text-center text-gray-600">Please log in to view your profile.</p>
+                <div className="main-content">
+                    <div className="text-center" style={{ padding: 'var(--space-16)' }}>
+                        <p style={{ color: 'var(--color-text-secondary)' }}>
+                            Please log in to view your profile.
+                        </p>
+                    </div>
                 </div>
-                <Footer />
             </div>
         );
     }
 
     if (profileLoading) {
         return (
-            <div>
+            <div className="page-container">
                 <Header />
-                <div className="container mx-auto px-4 py-8">
-                    <p className="text-center">Loading profile...</p>
+                <div className="main-content">
+                    <div className="loading">
+                        Loading profile...
+                    </div>
                 </div>
-                <Footer />
             </div>
         );
     }
 
     return (
-        <div>
+        <div className="page-container">
             <Header />
-            <div className="container mx-auto px-4 py-8 max-w-4xl">
+            <div className="main-content">
                 {isEditing ? (
                     <EditProfile
                         onSave={() => setIsEditing(false)}
@@ -63,8 +66,7 @@ const ProfilePage = () => {
 
                 {/* Create Post Section */}
                 {!isEditing && (
-                    <div className="mb-8">
-                        <h3 className="text-xl font-bold mb-4">Create a Post</h3>
+                    <div style={{ marginBottom: 'var(--space-6)' }}>
                         <CreatePost />
                     </div>
                 )}
@@ -72,14 +74,18 @@ const ProfilePage = () => {
                 {/* User's Posts */}
                 {!isEditing && (
                     <div>
-                        <h3 className="text-xl font-bold mb-4">
+                        <h3 style={{ 
+                            fontSize: '1.25rem', 
+                            fontWeight: '600', 
+                            marginBottom: 'var(--space-4)',
+                            color: 'var(--color-text-primary)'
+                        }}>
                             Your Posts ({userPosts.length})
                         </h3>
                         <PostList posts={userPosts} removePost={removePost} />
                     </div>
                 )}
             </div>
-            <Footer />
         </div>
     );
 };

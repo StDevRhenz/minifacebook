@@ -17,19 +17,46 @@ CREATE TABLE IF NOT EXISTS profiles (
 
 -- Step 2: Create profiles for existing users (if any)
 -- This will create a profile for any existing auth user that doesn't have one
-INSERT INTO profiles (id, username, full_name, email, created_at, updated_at)
-SELECT 
-    au.id,
-    COALESCE(au.email, 'user_' || substr(au.id::text, 1, 8)) as username,
-    COALESCE(au.raw_user_meta_data->>'full_name', au.email, 'User') as full_name,
-    au.email,
-    au.created_at,
-    au.updated_at
-FROM auth.users au
-WHERE NOT EXISTS (
-    SELECT 1 FROM profiles p WHERE p.id = au.id
-)
-ON CONFLICT (id) DO NOTHING;
+-- First, check what columns exist in the profiles table and insert accordingly
+DO $$
+BEGIN
+    -- Check if email column exists
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'profiles' AND column_name = 'email'
+    ) THEN
+        -- Insert with email column
+        INSERT INTO profiles (id, username, full_name, email, created_at, updated_at)
+        SELECT 
+            au.id,
+            COALESCE(au.email, 'user_' || substr(au.id::text, 1, 8)) as username,
+            COALESCE(au.raw_user_meta_data->>'full_name', au.email, 'User') as full_name,
+            au.email,
+            au.created_at,
+            au.updated_at
+        FROM auth.users au
+        WHERE NOT EXISTS (
+            SELECT 1 FROM profiles p WHERE p.id = au.id
+        )
+        ON CONFLICT (id) DO NOTHING;
+    ELSE
+        -- Insert without email column (existing table structure)
+        INSERT INTO profiles (id, username, full_name, created_at, updated_at)
+        SELECT 
+            au.id,
+            COALESCE(au.email, 'user_' || substr(au.id::text, 1, 8)) as username,
+            COALESCE(au.raw_user_meta_data->>'full_name', au.email, 'User') as full_name,
+            au.created_at,
+            au.updated_at
+        FROM auth.users au
+        WHERE NOT EXISTS (
+            SELECT 1 FROM profiles p WHERE p.id = au.id
+        )
+        ON CONFLICT (id) DO NOTHING;
+    END IF;
+    
+    RAISE NOTICE 'Created profiles for existing users';
+END $$;
 
 -- Step 3: Check if posts table exists and what its current structure is
 DO $$
@@ -128,13 +155,26 @@ LANGUAGE plpgsql
 SECURITY DEFINER SET search_path = public
 AS $$
 BEGIN
-    INSERT INTO public.profiles (id, username, full_name, email)
-    VALUES (
-        new.id,
-        COALESCE(new.email, 'user_' || substr(new.id::text, 1, 8)),
-        COALESCE(new.raw_user_meta_data->>'full_name', new.email, 'User'),
-        new.email
-    );
+    -- Check if email column exists and insert accordingly
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'profiles' AND column_name = 'email'
+    ) THEN
+        INSERT INTO public.profiles (id, username, full_name, email)
+        VALUES (
+            new.id,
+            COALESCE(new.email, 'user_' || substr(new.id::text, 1, 8)),
+            COALESCE(new.raw_user_meta_data->>'full_name', new.email, 'User'),
+            new.email
+        );
+    ELSE
+        INSERT INTO public.profiles (id, username, full_name)
+        VALUES (
+            new.id,
+            COALESCE(new.email, 'user_' || substr(new.id::text, 1, 8)),
+            COALESCE(new.raw_user_meta_data->>'full_name', new.email, 'User')
+        );
+    END IF;
     RETURN new;
 END;
 $$;

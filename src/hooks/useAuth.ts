@@ -70,7 +70,7 @@ export const useAuth = () => {
                         const userWithProfile: User = {
                             id: profileData.id,
                             username: profileData.username || data.user.user_metadata?.username || '',
-                            email: profileData.email || data.user.email || '',
+                            email: data.user.email || '', // Always get email from auth user
                             createdAt: new Date(profileData.created_at || data.user.created_at),
                             updatedAt: new Date(profileData.updated_at || data.user.updated_at || data.user.created_at),
                         };
@@ -121,7 +121,7 @@ export const useAuth = () => {
                         const userWithProfile: User = {
                             id: profileData.id,
                             username: profileData.username || data.user.user_metadata?.username || '',
-                            email: profileData.email || data.user.email || '',
+                            email: data.user.email || '', // Always get email from auth user
                             createdAt: new Date(profileData.created_at || data.user.created_at),
                             updatedAt: new Date(profileData.updated_at || data.user.updated_at || data.user.created_at),
                         };
@@ -188,7 +188,6 @@ export const useAuth = () => {
                         .insert([{
                             id: data.user.id,
                             username,
-                            email,
                             full_name: username, // Use username as initial full name
                             created_at: new Date().toISOString(),
                             updated_at: new Date().toISOString(),

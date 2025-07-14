@@ -1,7 +1,6 @@
 import React from 'react';
 import PostItem from './PostItem';
 import { Post } from '../../../types/post';
-import './PostList.css'; // Assuming you have some styles for the PostList
 
 interface PostListProps {
   posts?: Post[];
@@ -16,9 +15,11 @@ const PostList: React.FC<PostListProps> = ({ posts = [], removePost }) => {
   };
 
   return (
-    <div className="post-list">
+    <div className="posts-container">
       {posts.length === 0 ? (
-        <p>No posts available.</p>
+        <div className="text-center text-sm" style={{ color: 'var(--color-text-muted)', padding: 'var(--space-8)' }}>
+          No posts yet. Be the first to share something!
+        </div>
       ) : (
         posts.map(post => <PostItem key={post.id} post={post} onDelete={handleRemovePost} />)
       )}
