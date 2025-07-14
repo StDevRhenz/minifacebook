@@ -1,0 +1,6 @@
+# Browsers that we support
+
+defaults
+not ie 11
+not chrome < 60
+not safari < 10.1

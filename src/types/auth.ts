@@ -1,3 +1,5 @@
+import { User as SupabaseUser, Session } from '@supabase/supabase-js';
+
 export interface User {
     id: string;
     username: string;
@@ -7,8 +9,8 @@ export interface User {
 }
 
 export interface AuthResponse {
-    user: User;
-    token: string;
+    user: SupabaseUser | null;
+    session: Session | null;
 }
 
 export interface LoginRequest {
