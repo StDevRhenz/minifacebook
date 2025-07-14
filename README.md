@@ -12,30 +12,57 @@ This project is ideal for those learning CRUD operations, authentication, and cl
 
 # Folder Structure
 
-```
-minifacebook/
-├── public/                     # Static files (favicon, uploaded images)
-├── src/
-│   ├── pages/
-│   │   ├── index.tsx           # Home page (feed)
-│   │   ├── login.tsx
-│   │   ├── register.tsx
-│   │   └── api/                # Backend API routes
-│   │       ├── auth/
-│   │       │   ├── login.ts
-│   │       │   └── register.ts
-│   │       └── posts/
-│   │           ├── index.ts    # GET (list), POST (create post)
-│   │           └── [id].ts     # DELETE post by ID
-│   ├── components/             # PostCard, PostForm, etc.
-│   ├── styles/                 # CSS or Tailwind setup
-│   └── lib/                    # Database connection, auth helpers
-├── db/                         # (Supabase)
-│   └── schema.prisma
-├── .env
-├── next.config.js
-└── README.md
-```
+src/
+├── components/
+│   ├── common/           # Reusable components
+│   │   ├── Button/
+│   │   ├── Modal/
+│   │   └── Input/
+│   ├── layout/           # Layout components
+│   │   ├── Header.js
+│   │   ├── Sidebar.js
+│   │   └── Footer.js
+│   ├── features/         # Feature-specific components
+│   │   ├── auth/
+│   │   │   ├── LoginForm.js
+│   │   │   └── RegisterForm.js
+│   │   ├── posts/
+│   │   │   ├── PostList.js
+│   │   │   ├── PostItem.js
+│   │   │   └── CreatePost.js
+│   │   └── profile/
+│   │       ├── ProfileCard.js
+│   │       └── EditProfile.js
+├── hooks/                # Custom React hooks
+│   ├── useAuth.js
+│   ├── usePosts.js
+│   └── useLocalStorage.js
+├── services/             # API and external services
+│   ├── api.js
+│   ├── authService.js
+│   └── postService.js
+├── utils/                # Helper functions
+│   ├── dateUtils.js
+│   ├── validators.js
+│   └── constants.js
+├── contexts/             # React Context providers
+│   ├── AuthContext.js
+│   └── ThemeContext.js
+├── styles/               # Global styles
+│   ├── globals.css
+│   ├── variables.css
+│   └── mixins.css
+├── assets/               # Static assets
+│   ├── images/
+│   ├── icons/
+│   └── fonts/
+├── pages/                # Page-level components
+│   ├── HomePage.js
+│   ├── ProfilePage.js
+│   └── LoginPage.js
+└── tests/                # Test utilities
+    ├── testUtils.js
+    └── mocks/
 
 
 ## Technologies Used

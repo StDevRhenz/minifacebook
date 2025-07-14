@@ -4,9 +4,6 @@ const nextConfig = {
   images: {
     domains: ['localhost'],
   },
-  experimental: {
-    appDir: false,
-  },
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
 };
 
