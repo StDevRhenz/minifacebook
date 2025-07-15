@@ -19,17 +19,23 @@ const HomePage = () => {
                 </Head>
                 <div className="page-container">
                 <Header />
-                <div className="main-content">
-                    <div className="text-center" style={{ padding: 'var(--space-16)' }}>
-                        <h1 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: 'var(--space-4)', color: 'var(--color-text-primary)' }}>
+                <div className="main-content" style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    minHeight: 'calc(100vh - 120px)',
+                    padding: 'var(--space-8)'
+                }}>
+                    <div className="text-center" style={{ maxWidth: '600px', width: '100%' }}>
+                        <h1 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: 'var(--space-6)', color: 'var(--color-text-primary)' }}>
                             Welcome to Unspoken Letters
                         </h1>
-                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-8)' }}>
-                            Connect with friends and share your thoughts
+                        <p style={{ fontSize: '1.1rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-10)', lineHeight: '1.6' }}>
+                            This is a freedom wall to confess your unsaid thoughts.
                         </p>
-                        <div style={{ display: 'flex', gap: 'var(--space-4)', justifyContent: 'center' }}>
-                            <a href="/login" className="btn btn-primary">Sign In</a>
-                            <a href="/register" className="btn btn-secondary">Create Account</a>
+                        <div style={{ display: 'flex', gap: 'var(--space-4)', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <a href="/login" className="btn btn-primary" style={{ minWidth: '120px' }}>Sign In</a>
+                            <a href="/register" className="btn btn-secondary" style={{ minWidth: '120px' }}>Create Account</a>
                         </div>
                     </div>
                 </div>
