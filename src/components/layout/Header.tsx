@@ -1,11 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../hooks/useAuth';
-import { useTheme } from '../../contexts/ThemeContext';
 
 const Header: React.FC = () => {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
 
   return (
     <header className="header">
@@ -20,14 +18,6 @@ const Header: React.FC = () => {
               Welcome, {user.email}
             </div>
           )}
-          
-          <button
-            onClick={toggleTheme}
-            className="theme-toggle"
-            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-          >
-            {theme === 'light' ? '🌙' : '☀️'}
-          </button>
           
           {user ? (
             <div style={{ display: 'flex', gap: '1rem' }}>

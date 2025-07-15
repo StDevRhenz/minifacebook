@@ -234,12 +234,16 @@ export const useAuth = () => {
                 // Demo mode logout
                 setUser(null);
                 localStorage.removeItem('demo_user');
+                // Redirect to login page
+                window.location.href = '/login';
                 return;
             }
 
             const { error } = await supabase.auth.signOut();
             if (error) throw new Error(error.message);
             setUser(null);
+            // Redirect to login page
+            window.location.href = '/login';
         } catch (err: any) {
             const errorMessage = err.message || 'Logout failed';
             setError(errorMessage);
