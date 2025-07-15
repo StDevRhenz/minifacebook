@@ -1,5 +1,18 @@
--- Mini Facebook Database Migration Script
--- Run this in your Supabase SQL Editor to fix the relationship between posts and profiles
+-- =================================================================
+-- MINIFACEBOOK - COMPLETE DATABASE SETUP
+-- =================================================================
+-- 
+-- 📋 INSTRUCTIONS:
+-- 1. Copy this entire file
+-- 2. Go to your Supabase Dashboard > SQL Editor
+-- 3. Paste and run this script
+-- 4. Check the output for verification results
+--
+-- ✅ This script is SAFE to run multiple times
+-- ✅ Works for both NEW and EXISTING databases
+-- ✅ Includes comprehensive error handling
+-- 
+-- =================================================================
 
 -- Step 1: First, ensure the profiles table exists with correct structure
 CREATE TABLE IF NOT EXISTS profiles (
