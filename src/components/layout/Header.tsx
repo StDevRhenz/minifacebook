@@ -8,7 +8,7 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="header-content">
-        <Link href="/" className="header-title">
+        <Link href="/" className="header-title" style={{ textAlign: 'center', flex: 1 }}>
           Unspoken Letters
         </Link>
         
@@ -28,16 +28,7 @@ const Header: React.FC = () => {
                 Logout
               </button>
             </div>
-          ) : (
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <Link href="/login" className="btn btn-ghost">
-                Login
-              </Link>
-              <Link href="/register" className="btn btn-primary">
-                Register
-              </Link>
-            </div>
-          )}
+          ) : null}
         </div>
       </div>
     </header>
