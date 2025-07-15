@@ -5,8 +5,8 @@ import { Post, CreatePostRequest } from '../types/post';
 const demoData: Post[] = [
     {
         id: 'demo-1',
-        title: '🎉 Welcome to Mini Facebook!',
-        content: 'This is a demo post to show how our social platform works. Create an account to start sharing your thoughts!',
+        title: '🎉 Welcome to Unspoken Letters!',
+        content: 'This is a demo post to show how our platform works. Create an account to start sharing your thoughts!',
         authorId: 'demo-user-1',
         author: {
             id: 'demo-user-1',
@@ -20,7 +20,7 @@ const demoData: Post[] = [
     {
         id: 'demo-2',
         title: '🚀 Getting Started',
-        content: 'Here are some tips to get the most out of Mini Facebook:\n\n• Create engaging posts\n• Connect with other users\n• Share your thoughts and experiences\n• Have fun!',
+        content: 'Here are some tips to get the most out of Unspoken Letters:\n\n• Create engaging posts\n• Connect with other users\n• Share your thoughts and experiences\n• Have fun!',
         authorId: 'demo-user-2',
         author: {
             id: 'demo-user-2',

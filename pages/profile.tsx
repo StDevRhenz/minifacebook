@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Head from 'next/head';
 import { useAuth } from '../src/contexts/AuthContent';
 import { useProfile } from '../src/hooks/useProfile';
 import Header from '../src/components/layout/Header';
@@ -46,7 +47,12 @@ const ProfilePage = () => {
     }
 
     return (
-        <div className="page-container">
+        <>
+            <Head>
+                <title>Profile - Unspoken Letters</title>
+                <meta name="description" content="Manage your profile and posts on Unspoken Letters" />
+            </Head>
+            <div className="page-container">
             <Header />
             <div className="main-content">
                 {isEditing ? (
@@ -87,6 +93,7 @@ const ProfilePage = () => {
                 )}
             </div>
         </div>
+        </>
     );
 };
 

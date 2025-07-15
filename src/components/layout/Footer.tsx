@@ -9,9 +9,9 @@ const Footer: React.FC = () => {
                     <div className="col-span-1 md:col-span-2">
                         <div className="flex items-center space-x-3 mb-4">
                             <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                                <span className="text-lg">📘</span>
+                                <span className="text-lg">�</span>
                             </div>
-                            <h3 className="text-xl font-bold">Mini Facebook</h3>
+                            <h3 className="text-xl font-bold">Unspoken Letters</h3>
                         </div>
                         <p className="text-gray-300 mb-4 max-w-md">
                             Connect with friends, share your thoughts, and discover what's happening in your world. 
@@ -55,7 +55,7 @@ const Footer: React.FC = () => {
 
                 <div className="border-t border-gray-700 mt-8 pt-6 text-center">
                     <p className="text-gray-400">
-                        &copy; {new Date().getFullYear()} Mini Facebook. All rights reserved. Made with ❤️ by the community.
+                        &copy; {new Date().getFullYear()} Unspoken Letters. All rights reserved. Made with ❤️ by the community.
                     </p>
                 </div>
             </div>

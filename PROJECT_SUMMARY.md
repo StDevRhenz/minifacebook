@@ -1,4 +1,4 @@
-# 🌸 Midnight Bloom - Project Summary
+# 🌸 Unspoken Letters - Project Summary
 
 ## What We've Built
 

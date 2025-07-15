@@ -1,5 +1,5 @@
 -- =================================================================
--- MINIFACEBOOK - COMPLETE DATABASE SETUP
+-- UNSPOKEN LETTERS - COMPLETE DATABASE SETUP
 -- =================================================================
 -- 
 -- 📋 INSTRUCTIONS:

@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 import Header from '../src/components/layout/Header';
 import PostList from '../src/components/features/posts/PostList';
 import CreatePost from '../src/components/features/posts/CreatePost';
@@ -11,12 +12,17 @@ const HomePage = () => {
 
     if (!user) {
         return (
-            <div className="page-container">
+            <>
+                <Head>
+                    <title>Welcome to Unspoken Letters</title>
+                    <meta name="description" content="Connect with friends and share your thoughts on Unspoken Letters" />
+                </Head>
+                <div className="page-container">
                 <Header />
                 <div className="main-content">
                     <div className="text-center" style={{ padding: 'var(--space-16)' }}>
                         <h1 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: 'var(--space-4)', color: 'var(--color-text-primary)' }}>
-                            Welcome to MiniFacebook
+                            Welcome to Unspoken Letters
                         </h1>
                         <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-8)' }}>
                             Connect with friends and share your thoughts
@@ -27,18 +33,25 @@ const HomePage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+                </div>
+            </>
         );
     }
 
     return (
-        <div className="page-container">
+        <>
+            <Head>
+                <title>Unspoken Letters - Share Your Thoughts</title>
+                <meta name="description" content="Share your thoughts and connect with friends on Unspoken Letters" />
+            </Head>
+            <div className="page-container">
             <Header />
             <div className="main-content">
                 <CreatePost />
                 <PostList posts={posts} removePost={removePost} />
             </div>
-        </div>
+            </div>
+        </>
     );
 };
 

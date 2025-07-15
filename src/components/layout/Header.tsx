@@ -9,7 +9,7 @@ const Header: React.FC = () => {
     <header className="header">
       <div className="header-content">
         <Link href="/" className="header-title">
-          MiniFacebook
+          Unspoken Letters
         </Link>
         
         <div className="header-actions">

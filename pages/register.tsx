@@ -1,11 +1,17 @@
 import React from 'react';
+import Head from 'next/head';
 import Link from 'next/link';
 import RegisterForm from '../src/components/features/auth/RegisterForm';
 import Header from '../src/components/layout/Header';
 
 const RegisterPage = () => {
     return (
-        <div className="page-container">
+        <>
+            <Head>
+                <title>Register - Unspoken Letters</title>
+                <meta name="description" content="Create your Unspoken Letters account and start sharing your thoughts" />
+            </Head>
+            <div className="page-container">
             <Header />
             <div className="main-content">
                 <div className="form-container">
@@ -17,6 +23,7 @@ const RegisterPage = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 
