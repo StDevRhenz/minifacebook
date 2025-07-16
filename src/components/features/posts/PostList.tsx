@@ -4,14 +4,14 @@ import { Post, UpdatePostRequest } from '../../../types/post';
 
 interface PostListProps {
   posts?: Post[];
-  removePost?: (id: string) => void;
+  removePost?: (id: string) => Promise<void>;
   editPost?: (postId: string, updateData: UpdatePostRequest) => Promise<void>;
 }
 
 const PostList: React.FC<PostListProps> = ({ posts = [], removePost, editPost }) => {
-  const handleRemovePost = (id: string) => {
+  const handleRemovePost = async (id: string) => {
     if (removePost) {
-      removePost(id);
+      await removePost(id);
     }
   };
 
