@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Post } from '../types/post';
-import { fetchPosts, createPost, deletePost } from '../services/postService';
+import { Post, UpdatePostRequest } from '../types/post';
+import { fetchPosts, createPost, deletePost, updatePost } from '../services/postService';
 
 interface PostsContextType {
     posts: Post[];
@@ -8,6 +8,7 @@ interface PostsContextType {
     error: string | null;
     addPost: (newPost: any) => Promise<void>;
     removePost: (postId: string) => Promise<void>;
+    editPost: (postId: string, updateData: UpdatePostRequest) => Promise<void>;
     refreshPosts: () => Promise<void>;
 }
 
@@ -66,6 +67,19 @@ export const PostsProvider: React.FC<PostsProviderProps> = ({ children }) => {
         }
     };
 
+    const editPost = async (postId: string, updateData: UpdatePostRequest) => {
+        try {
+            const updatedPost = await updatePost(postId, updateData);
+            setPosts((prevPosts) => 
+                prevPosts.map(post => post.id === postId ? updatedPost : post)
+            );
+            setError(null);
+        } catch (err) {
+            setError('Failed to update post');
+            throw err;
+        }
+    };
+
     const refreshPosts = async () => {
         await loadPosts();
     };
@@ -76,6 +90,7 @@ export const PostsProvider: React.FC<PostsProviderProps> = ({ children }) => {
         error,
         addPost,
         removePost,
+        editPost,
         refreshPosts,
     };
 

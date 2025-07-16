@@ -1,5 +1,5 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
-import { Post, CreatePostRequest } from '../types/post';
+import { Post, CreatePostRequest, UpdatePostRequest } from '../types/post';
 
 // Demo posts for when Supabase is not configured
 const demoData: Post[] = [
@@ -282,6 +282,121 @@ export const createPost = async (postData: CreatePostRequest): Promise<Post> => 
 export const deletePost = async (postId: string): Promise<void> => {
     const { error } = await supabase.from('posts').delete().eq('id', postId);
     if (error) throw new Error(error.message);
+};
+
+export const updatePost = async (postId: string, updateData: UpdatePostRequest): Promise<Post> => {
+    if (!isSupabaseConfigured) {
+        // Demo mode - update mock post
+        const existingPosts = localStorage.getItem('demo_posts');
+        const posts = existingPosts ? JSON.parse(existingPosts) : [];
+        const postIndex = posts.findIndex((p: Post) => p.id === postId);
+        
+        if (postIndex === -1) {
+            throw new Error('Post not found');
+        }
+        
+        posts[postIndex] = {
+            ...posts[postIndex],
+            title: updateData.title,
+            content: updateData.content,
+            updatedAt: new Date(),
+        };
+        
+        localStorage.setItem('demo_posts', JSON.stringify(posts));
+        return posts[postIndex];
+    }
+
+    try {
+        // First try with profiles join
+        let { data, error } = await supabase
+            .from('posts')
+            .update({
+                title: updateData.title,
+                content: updateData.content,
+                updated_at: new Date().toISOString(),
+            })
+            .eq('id', postId)
+            .select(`
+                *,
+                author:profiles(
+                    id,
+                    username,
+                    full_name,
+                    avatar_url
+                )
+            `)
+            .single();
+        
+        // If profile join fails, update without join and get profile separately
+        if (error && error.message.includes('relationship')) {
+            console.log('Profiles relationship not found, using fallback approach...');
+            
+            const updateResult = await supabase
+                .from('posts')
+                .update({
+                    title: updateData.title,
+                    content: updateData.content,
+                    updated_at: new Date().toISOString(),
+                })
+                .eq('id', postId)
+                .select('*')
+                .single();
+            
+            if (updateResult.error) {
+                throw new Error(updateResult.error.message);
+            }
+            
+            // Try to get profile data
+            let authorProfile = null;
+            try {
+                const profileResult = await supabase
+                    .from('profiles')
+                    .select('id, username, full_name, avatar_url')
+                    .eq('id', updateResult.data.author_id)
+                    .single();
+                
+                if (profileResult.data) {
+                    authorProfile = profileResult.data;
+                }
+            } catch (profileError) {
+                console.log('Could not fetch profile data');
+            }
+            
+            data = {
+                ...updateResult.data,
+                author: authorProfile
+            };
+            error = null;
+        }
+        
+        if (error) {
+            throw new Error(error.message);
+        }
+        
+        // Convert snake_case to camelCase
+        return {
+            id: data.id,
+            title: data.title,
+            content: data.content,
+            authorId: data.author_id,
+            createdAt: new Date(data.created_at),
+            updatedAt: new Date(data.updated_at),
+            author: data.author ? {
+                id: data.author.id,
+                username: data.author.username || 'Unknown User',
+                fullName: data.author.full_name || data.author.username || 'Unknown User',
+                avatarUrl: data.author.avatar_url,
+            } : {
+                id: data.author_id,
+                username: 'Unknown User',
+                fullName: 'Unknown User',
+                avatarUrl: undefined
+            },
+        } as Post;
+    } catch (err) {
+        console.error('Failed to update post:', err);
+        throw err;
+    }
 };
 
 export const deletePostById = deletePost;

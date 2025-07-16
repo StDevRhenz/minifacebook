@@ -20,3 +20,8 @@ export interface CreatePostRequest {
     content: string;
     authorId: string;
 }
+
+export interface UpdatePostRequest {
+    title: string;
+    content: string;
+}

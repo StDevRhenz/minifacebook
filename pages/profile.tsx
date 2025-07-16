@@ -12,7 +12,7 @@ import { usePosts } from '../src/contexts/PostsContext';
 const ProfilePage = () => {
     const { user } = useAuth();
     const { profile, loading: profileLoading } = useProfile();
-    const { posts, removePost } = usePosts();
+    const { posts, removePost, editPost } = usePosts();
     const [isEditing, setIsEditing] = useState(false);
 
     // Filter posts by current user
@@ -88,7 +88,7 @@ const ProfilePage = () => {
                         }}>
                             Your Posts ({userPosts.length})
                         </h3>
-                        <PostList posts={userPosts} removePost={removePost} />
+                        <PostList posts={userPosts} removePost={removePost} editPost={editPost} />
                     </div>
                 )}
             </div>

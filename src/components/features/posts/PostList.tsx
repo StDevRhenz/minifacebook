@@ -1,16 +1,23 @@
 import React from 'react';
 import PostItem from './PostItem';
-import { Post } from '../../../types/post';
+import { Post, UpdatePostRequest } from '../../../types/post';
 
 interface PostListProps {
   posts?: Post[];
   removePost?: (id: string) => void;
+  editPost?: (postId: string, updateData: UpdatePostRequest) => Promise<void>;
 }
 
-const PostList: React.FC<PostListProps> = ({ posts = [], removePost }) => {
+const PostList: React.FC<PostListProps> = ({ posts = [], removePost, editPost }) => {
   const handleRemovePost = (id: string) => {
     if (removePost) {
       removePost(id);
+    }
+  };
+
+  const handleEditPost = async (postId: string, updateData: UpdatePostRequest) => {
+    if (editPost) {
+      await editPost(postId, updateData);
     }
   };
 
@@ -21,7 +28,14 @@ const PostList: React.FC<PostListProps> = ({ posts = [], removePost }) => {
           No posts yet. Be the first to share something!
         </div>
       ) : (
-        posts.map(post => <PostItem key={post.id} post={post} onDelete={handleRemovePost} />)
+        posts.map(post => (
+          <PostItem 
+            key={post.id} 
+            post={post} 
+            onDelete={handleRemovePost} 
+            onEdit={handleEditPost}
+          />
+        ))
       )}
     </div>
   );

@@ -7,7 +7,7 @@ import { useAuth } from '../src/contexts/AuthContent';
 import { usePosts } from '../src/contexts/PostsContext';
 
 const HomePage = () => {
-    const { posts, removePost } = usePosts();
+    const { posts, removePost, editPost } = usePosts();
     const { user } = useAuth();
 
     if (!user) {
@@ -54,7 +54,7 @@ const HomePage = () => {
             <Header />
             <div className="main-content">
                 <CreatePost />
-                <PostList posts={posts} removePost={removePost} />
+                <PostList posts={posts} removePost={removePost} editPost={editPost} />
             </div>
             </div>
         </>

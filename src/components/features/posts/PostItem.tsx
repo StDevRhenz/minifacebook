@@ -1,18 +1,35 @@
-import React from 'react';
-import { Post } from '../../../types/post';
+import React, { useState } from 'react';
+import { Post, UpdatePostRequest } from '../../../types/post';
 import { useAuth } from '../../../contexts/AuthContent';
+import EditPost from './EditPost';
 
 interface PostItemProps {
   post: Post;
   onDelete: (id: string) => void;
+  onEdit: (postId: string, updateData: UpdatePostRequest) => Promise<void>;
 }
 
-const PostItem: React.FC<PostItemProps> = ({ post, onDelete }) => {
+const PostItem: React.FC<PostItemProps> = ({ post, onDelete, onEdit }) => {
   const { user } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
+  const canEdit = user?.id === post.authorId;
   const canDelete = user?.id === post.authorId;
 
   const handleDelete = () => {
     onDelete(post.id);
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveEdit = async (postId: string, updateData: UpdatePostRequest) => {
+    await onEdit(postId, updateData);
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
   };
 
   const formatDate = (date: Date) => {
@@ -24,6 +41,16 @@ const PostItem: React.FC<PostItemProps> = ({ post, onDelete }) => {
       minute: '2-digit'
     });
   };
+
+  if (isEditing) {
+    return (
+      <EditPost
+        post={post}
+        onSave={handleSaveEdit}
+        onCancel={handleCancelEdit}
+      />
+    );
+  }
 
   return (
     <div className="post-card">
@@ -42,15 +69,26 @@ const PostItem: React.FC<PostItemProps> = ({ post, onDelete }) => {
             </div>
           </div>
         </div>
-        {canDelete && (
-          <button
-            onClick={handleDelete}
-            className="post-delete-btn"
-            title="Delete post"
-          >
-            <span className="delete-icon">×</span>
-          </button>
-        )}
+        <div className="post-actions">
+          {canEdit && (
+            <button
+              onClick={handleEdit}
+              className="post-edit-btn"
+              title="Edit post"
+            >
+              <span className="edit-icon">Edit Post</span>
+            </button>
+          )}
+          {canDelete && (
+            <button
+              onClick={handleDelete}
+              className="post-delete-btn"
+              title="Delete post"
+            >
+              <span className="delete-icon">×</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Post Content */}
