@@ -15,7 +15,7 @@ const Header: React.FC = () => {
         <div className="header-actions">
           {user && (
             <div className="user-info">
-              Welcome, {user.email}
+              Welcome, {user.username}
             </div>
           )}
           
